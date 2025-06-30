@@ -1,4 +1,3 @@
-import React from 'react';
 
 const WhoSection = () => {
   return (
@@ -16,8 +15,8 @@ const WhoSection = () => {
             preserveAspectRatio="none"
           >
             <rect x="2" width="1440" height="730" fill="url(#paint0_linear_522_278)"/>
-            <path d="M1303.5 561.034C1229.93 552.985 1187.82 555.805 1114 561.034C1045.39 565.895 939.5 584.994 939.5 584.994C939.5 584.994 997.09 577.463 1029.5 576.034C1074.81 574.037 1092.65 572.195 1138 572.034C1208.05 571.785 1248.65 574.659 1317.5 587.534C1366.91 596.773 1441.5 622.034 1441.5 622.034V587.534C1441.5 587.534 1358.05 567.003 1303.5 561.034Z" fill="#33FF94"/>
-            <path d="M0.5 628.534V572.534C0.5 572.534 63.1128 608.892 103.5 617.534C153.455 628.224 181.207 636.569 232 642.034C298.979 649.241 337.224 645.51 404.5 642.034C460.324 639.15 547 628.534 547 628.534C547 628.534 413.167 657.358 326 663.034L325.75 663.05C262.774 667.151 226.851 669.49 164 663.034C99.0849 656.366 0.5 628.534 0.5 628.534Z" fill="#33FF94"/>
+            <path d="M1303.5 561.034C1229.93 552.985 1187.82 555.805 1114 561.034C1045.39 565.895 939.5 584.994 939.5 584.994C939.5 584.994 997.09 577.463 1029.5 576.034C1074.81 574.037 1092.65 572.195 1138 572.034C1208.05 571.785 1248.65 574.659 1317.5 587.534C1366.91 596.773 1441.5 622.034 1441.5 622.034V587.534C1441.5 587.534 1358.05 567.003 1303.5 561.034Z" fill="#ef8f11"/>
+            <path d="M0.5 628.534V572.534C0.5 572.534 63.1128 608.892 103.5 617.534C153.455 628.224 181.207 636.569 232 642.034C298.979 649.241 337.224 645.51 404.5 642.034C460.324 639.15 547 628.534 547 628.534C547 628.534 413.167 657.358 326 663.034L325.75 663.05C262.774 667.151 226.851 669.49 164 663.034C99.0849 656.366 0.5 628.534 0.5 628.534Z" fill="#ef8f11"/>
             <defs>
               <linearGradient id="paint0_linear_522_278" x1="722" y1="0" x2="722" y2="730" gradientUnits="userSpaceOnUse">
                 <stop stopColor="#7A4ADF"/>
@@ -32,7 +31,7 @@ const WhoSection = () => {
             {/* Title with integrated logo */}
             <div className="who-title-container">
               <h2 className="who-main-title">
-                Who is 
+                Who <span style={{ color: '#ef8f11' }}>is</span> 
                 <span className="logo-in-title">
                   <img src="/images/it_plus.png" alt="ItPlus" className="title-logo" />
                 </span>
@@ -107,12 +106,13 @@ const WhoSection = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 20px;
-          flex-wrap: wrap;
+          gap: 0.5rem; 
+          flex-wrap: nowrap;
         }
 
         /* Logo integrated in title */
         .logo-in-title {
+        height: 1em;
           display: inline-flex;
           align-items: center;
         }
@@ -151,7 +151,7 @@ const WhoSection = () => {
 
         /* Our Story Button */
         .btn-our-story-centered {
-          background: linear-gradient(45deg, #10F981, #22C55E);
+          background: linear-gradient(45deg, rgb(245, 149, 32) , rgb(245, 149, 32) );
           color: #2D1B69;
           border: none;
           padding: 16px 40px;
@@ -167,8 +167,8 @@ const WhoSection = () => {
 
         .btn-our-story-centered:hover {
           transform: translateY(-3px);
-          box-shadow: 0 15px 35px rgba(16, 249, 129, 0.4);
-          background: linear-gradient(45deg, #22C55E, #10F981);
+          box-shadow: 0 15px 35px rgb(245, 149, 32) );
+          background: linear-gradient(45deg, rgb(245, 149, 32) , rgb(245, 149, 32) );
         }
 
         /* Responsive Design */

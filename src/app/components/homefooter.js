@@ -27,9 +27,6 @@ const Footer = () => {
 
       {/* Footer Content */}
       <div className="footer-content">
-        
-        
-
         <div className="container">
           <div className="footer-grid">
             {/* Brand Column */}
@@ -165,7 +162,7 @@ const Footer = () => {
         }
 
         .container {
-          max-width: 1200px;
+          max-width: 1280px;
           margin: 0 auto;
           padding: 0 40px;
           width: 100%;
@@ -267,7 +264,7 @@ const Footer = () => {
         }
 
         .footer-links a:hover {
-          color: #33FF94;
+          color: rgb(245, 149, 32);
           transform: translateX(8px);
         }
 
@@ -292,7 +289,7 @@ const Footer = () => {
         .contact-item i {
           font-size: 14px;
           width: 16px;
-          color: #33FF94;
+          color: rgb(245, 149, 32);
         }
 
         .newsletter-title {
@@ -319,7 +316,7 @@ const Footer = () => {
         }
 
         .newsletter-form:focus-within {
-          border-color: #33FF94;
+          border-color: rgb(245, 149, 32);
           box-shadow: 0 0 0 2px rgba(51, 255, 148, 0.2);
         }
 
@@ -346,7 +343,7 @@ const Footer = () => {
           top: 2px;
           height: 36px;
           padding: 0 18px;
-          background: linear-gradient(135deg, #33FF94, #00E676);
+          background: linear-gradient(135deg, rgb(245, 149, 32), rgb(245, 149, 32));
           color: #1a1a2e;
           border: none;
           border-radius: 18px;
@@ -359,7 +356,7 @@ const Footer = () => {
         }
 
         .subscribe-btn:hover {
-          background: linear-gradient(135deg, #00E676, #1DE9B6);
+          background: linear-gradient(135deg, rgb(245, 149, 32), rgb(245, 149, 32));
           transform: translateY(-1px);
           box-shadow: 0 4px 12px rgba(51, 255, 148, 0.3);
         }
@@ -403,177 +400,378 @@ const Footer = () => {
         }
 
         .footer-bottom-links a:hover {
-          color: #33FF94;
+          color: rgb(245, 149, 32);
         }
 
         /* Responsive Design */
-        @media (max-width: 1200px) {
+        @media (max-width: 1280px) {
           .container {
-            padding: 0 30px;
+            max-width: 1080px;
+            padding: 0 32px;
           }
-          
+
           .footer-grid {
-            gap: 40px;
+            gap: 48px;
+          }
+
+          .footer-wrapper {
+            min-height: 480px;
           }
         }
 
-        @media (max-width: 992px) {
-          .footer-wrapper {
-            min-height: 450px;
+        @media (max-width: 1024px) {
+          .container {
+            max-width: 896px;
+            padding: 0 28px;
           }
-          
-          .footer-content {
-            padding-top: 70px;
-          }
-          
+
           .footer-grid {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
             gap: 40px;
           }
-          
-          .footer-brand {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding-right: 0;
-            max-width: none;
+
+          .footer-wrapper {
+            min-height: 460px;
           }
-          
+
+          .brand-logo {
+            font-size: 32px;
+          }
+
           .brand-description {
-            max-width: 500px;
-            margin: 0 auto 35px;
+            font-size: 14px;
+            max-width: 260px;
           }
-          
-          .social-icons {
-            justify-content: center;
+
+          .social-icon {
+            width: 46px;
+            height: 46px;
+            font-size: 18px;
           }
         }
 
         @media (max-width: 768px) {
           .footer-wrapper {
-            min-height: 400px;
+            min-height: 600px;
           }
-          
+
           .footer-content {
-            padding-top: 60px;
-            padding-bottom: 30px;
+            padding-top: 64px;
+            padding-bottom: 32px;
           }
-          
+
           .container {
-            padding: 0 20px;
+            max-width: 640px;
+            padding: 0 24px;
           }
-          
+
           .footer-grid {
-            grid-template-columns: 1fr;
-            gap: 35px;
-            text-align: center;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            text-align: left;
           }
-          
+
           .footer-brand {
-            grid-column: auto;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding-right: 0;
           }
-          
+
+          .brand-description {
+            max-width: 400px;
+            margin: 0 auto 28px;
+          }
+
+          .social-icons {
+            justify-content: center;
+            gap: 16px;
+          }
+
           .footer-contact {
             max-width: none;
           }
-          
+
           .newsletter-form {
-            width: 260px;
-            height: 36px;
+            width: 100%;
+            max-width: 300px;
+            height: 38px;
             margin: 0 auto;
           }
-          
+
           .email-input {
-            padding: 0 80px 0 14px;
+            padding: 0 80px 0 12px;
             font-size: 12px;
           }
-          
+
           .subscribe-btn {
-            right: 2px;
-            top: 2px;
-            height: 32px;
-            padding: 0 14px;
+            height: 34px;
+            padding: 0 16px;
             font-size: 10px;
-            border-radius: 16px;
+            border-radius: 17px;
           }
-          
+
           .footer-bottom-content {
             flex-direction: column;
             text-align: center;
-            gap: 15px;
+            gap: 16px;
           }
-          
+
           .footer-bottom-links {
-            flex-wrap: wrap;
+            gap: 24px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .footer-wrapper {
+            min-height: 700px;
+          }
+
+          .container {
+            max-width: 100%;
+            padding: 0 20px;
+          }
+
+          .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            text-align: center;
+          }
+
+          .footer-section {
+            padding-top: 0;
+          }
+
+          .footer-heading {
+            font-size: 14px;
+            margin-bottom: 24px;
+          }
+
+          .footer-links a {
+            font-size: 14px;
+          }
+
+          .contact-item {
             justify-content: center;
-            gap: 20px;
+            font-size: 14px;
+          }
+
+          .newsletter-form {
+            max-width: 280px;
+          }
+
+          .brand-logo {
+            font-size: 30px;
+          }
+
+          .social-icon {
+            width: 44px;
+            height: 44px;
+            font-size: 18px;
           }
         }
 
         @media (max-width: 480px) {
           .footer-wrapper {
-            min-height: 350px;
+            min-height: 800px;
           }
-          
-          .footer-content {
-            padding-top: 50px;
-          }
-          
-          .container {
-            padding: 0 15px;
-          }
-          
-          .brand-logo {
-            font-size: 32px;
-          }
-          
-          .brand-description {
-            font-size: 14px;
-          }
-          
-          .social-icon {
-            width: 45px;
-            height: 45px;
-            font-size: 18px;
-          }
-          
-          .footer-grid {
-            gap: 30px;
-          }
-          
-          .contact-item {
-            font-size: 14px;
-          }
-          
-          .newsletter-form {
-            width: 240px;
-          }
-        }
 
-        @media (max-width: 360px) {
-          .footer-wrapper {
-            min-height: 320px;
-          }
-          
           .footer-content {
-            padding-top: 40px;
+            padding-top: 48px;
+            padding-bottom: 24px;
           }
-          
+
+          .container {
+            padding: 0 16px;
+          }
+
           .brand-logo {
             font-size: 28px;
           }
-          
+
+          .brand-description {
+            font-size: 13px;
+            max-width: 300px;
+          }
+
           .social-icon {
             width: 40px;
             height: 40px;
             font-size: 16px;
           }
-          
+
           .social-icons {
-            gap: 15px;
+            gap: 12px;
           }
-          
+
+          .footer-grid {
+            gap: 24px;
+          }
+
+          .footer-heading {
+            font-size: 13px;
+          }
+
+          .footer-links a {
+            font-size: 13px;
+          }
+
+          .contact-item {
+            font-size: 13px;
+            gap: 10px;
+          }
+
+          .newsletter-title {
+            font-size: 16px;
+          }
+
           .newsletter-form {
-            width: 220px;
+            max-width: 260px;
+            height: 36px;
+          }
+
+          .email-input {
+            font-size: 11px;
+            padding: 0 70px 0 10px;
+          }
+
+          .subscribe-btn {
+            height: 32px;
+            padding: 0 12px;
+            font-size: 9px;
+          }
+
+          .copyright {
+            font-size: 13px;
+          }
+
+          .footer-bottom-links a {
+            font-size: 13px;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .footer-wrapper {
+            min-height: 850px;
+          }
+
+          .footer-content {
+            padding-top: 40px;
+            padding-bottom: 20px;
+          }
+
+          .container {
+            padding: 0 12px;
+          }
+
+          .brand-logo {
+            font-size: 26px;
+          }
+
+          .brand-description {
+            font-size: 12px;
+            max-width: 260px;
+          }
+
+          .social-icon {
+            width: 36px;
+            height: 36px;
+            font-size: 14px;
+          }
+
+          .social-icons {
+            gap: 10px;
+          }
+
+          .footer-heading {
+            font-size: 12px;
+            margin-bottom: 20px;
+          }
+
+          .footer-links a {
+            font-size: 12px;
+          }
+
+          .contact-item {
+            font-size: 12px;
+            gap: 8px;
+          }
+
+          .newsletter-title {
+            font-size: 15px;
+          }
+
+          .newsletter-form {
+            max-width: 240px;
+            height: 34px;
+          }
+
+          .email-input {
+            font-size: 10px;
+            padding: 0 60px 0 8px;
+          }
+
+          .subscribe-btn {
+            height: 30px;
+            padding: 0 10px;
+            font-size: 8px;
+            border-radius: 15px;
+          }
+
+          .copyright {
+            font-size: 12px;
+          }
+
+          .footer-bottom-links {
+            gap: 20px;
+          }
+
+          .footer-bottom-links a {
+            font-size: 12px;
+          }
+        }
+
+        @media (max-width: 320px) {
+          .footer-wrapper {
+            min-height: 900px;
+          }
+
+          .container {
+            padding: 0 10px;
+          }
+
+          .brand-logo {
+            font-size: 24px;
+          }
+
+          .brand-description {
+            font-size: 11px;
+            max-width: 240px;
+          }
+
+          .social-icon {
+            width: 34px;
+            height: 34px;
+            font-size: 13px;
+          }
+
+          .footer-grid {
+            gap: 20px;
+          }
+
+          .newsletter-form {
+            max-width: 220px;
+            height: 32px;
+          }
+
+          .email-input {
+            font-size: 9px;
+            padding: 0 50px 0 8px;
+          }
+
+          .subscribe-btn {
+            height: 28px;
+            padding: 0 8px;
+            font-size: 7px;
           }
         }
       `}</style>

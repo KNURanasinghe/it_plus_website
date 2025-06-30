@@ -163,7 +163,7 @@ export default function Header() {
         }
         
         .nav-link:hover {
-          color: #33FF94 !important;
+          color:rgb(245, 149, 32) !important;
         }
         
         .dropdown-arrow {
@@ -183,7 +183,7 @@ export default function Header() {
         }
         
         .btn-contact {
-          border: 4px solid #33FF94;
+          border: 4px solid rgb(245, 149, 32) ;
           border-radius: 50px;
           color: white;
           font-size: 16px;
@@ -196,14 +196,14 @@ export default function Header() {
         }
         
         .btn-contact:hover {
-          background: #33FF94;
+          background: rgb(245, 149, 32) ;
           color: #360065;
         }
         
         .search-icon {
           width: 47px;
           height: 47px;
-          background: #33FF94;
+          background: rgb(245, 149, 32) ;
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -219,12 +219,13 @@ export default function Header() {
         }
         
         .green-bar {
-          background: #33FF94;
-          height: 36px;
+          background: rgb(245, 149, 32) ;
+          height: 36px; /* Default height */
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: space-between; /* Center the text when it's the only item */
           padding: 0 58px;
+          
         }
         
         .green-bar-text {
@@ -233,23 +234,12 @@ export default function Header() {
           font-weight: 400;
           font-family: 'Outfit', sans-serif;
           margin: 0;
-        }
-        
-        .contact-now-btn {
-          background: #360065;
-          color: white;
-          border: none;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 600;
-          font-family: 'Outfit', sans-serif;
-          padding: 5px 15px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-        
-        .contact-now-btn:hover {
-          background: #15145F;
+          flex: 1; /* Allow text to take available space */
+          min-width: 0; 
+          white-space: nowrap; /* Keep text on single line by default */
+          overflow: hidden; /* Hide overflow */
+          text-overflow: ellipsis; /* Add ellipsis for overflow */
+          text-align: center; /* Center text by default */
         }
         
         .dropdown-menu-custom {
@@ -286,12 +276,12 @@ export default function Header() {
         }
         
         .dropdown-column h6 {
-          color: #33FF94;
+          color: rgb(245, 149, 32) ;
           font-size: 18px;
           font-weight: 600;
           font-family: 'Outfit', sans-serif;
           margin-bottom: 15px;
-          border-bottom: 2px solid #33FF94;
+          border-bottom: 2px solid rgb(245, 149, 32) ;
           padding-bottom: 8px;
           cursor: pointer;
           transition: color 0.3s ease;
@@ -315,13 +305,13 @@ export default function Header() {
         }
         
         .dropdown-item-custom:hover {
-          color: #33FF94;
+          color: rgb(245, 149, 32) ;
           padding-left: 10px;
         }
         
         .dropdown-item-custom:before {
           content: '▶';
-          color: #33FF94;
+          color: rgb(245, 149, 32) ;
           font-size: 8px;
           margin-right: 8px;
           opacity: 0;
@@ -367,25 +357,97 @@ export default function Header() {
           margin-right: 20px;
         }
         
+        /* --- General Navbar Layout (Mobile First) --- */
         @media (max-width: 991px) {
+          .navbar-custom .container-fluid {
+            display: flex;
+            justify-content: space-between; /* Pushes logo to left, actions/toggle to right */
+            align-items: center;
+            padding: 0 20px; /* Add some padding to the sides */
+          }
+
+          .navbar-brand {
+            margin-left: 0; /* Remove fixed left margin */
+          }
+
+          .header-actions {
+            margin-right: 0; /* Remove fixed right margin */
+          }
+
           .mobile-toggle {
-            display: block;
+            display: block; /* Show mobile menu toggle */
           }
           
           .navbar-nav {
-            display: none;
+            display: none; /* Hide main nav links on smaller screens */
           }
           
+          /* Adjust dropdowns for smaller screens if they become visible */
           .dropdown-menu-custom {
-            min-width: 300px;
+            min-width: unset; /* Remove fixed min-width */
+            width: 90%; /* Take up more width */
+            left: 5%; /* Adjust positioning */
+            transform: translateX(0); /* Remove transform */
           }
           
           .dropdown-content {
-            flex-direction: column;
+            flex-direction: column; /* Stack columns vertically */
+            padding: 0 10px; /* Adjust padding */
           }
           
           .dropdown-column {
             margin: 10px 0;
+          }
+          
+          .dropdown-column h6 {
+            text-align: center; /* Center column titles */
+          }
+
+          .dropdown-item-custom {
+            text-align: center; /* Center dropdown items */
+          }
+        }
+
+        /* --- Green Bar Responsiveness --- */
+        @media (max-width: 768px) {
+          .green-bar {
+            height: auto; /* Allow height to adjust dynamically */
+            flex-direction: column; /* Stack text vertically */
+            justify-content: center; /* Center items vertically */
+            align-items: center; /* Center items horizontally */
+            padding: 10px 20px; /* Adjust padding for smaller screens */
+            gap: 0; /* No gap needed if only one item */
+          }
+
+          .green-bar-text {
+            font-size: 14px; /* Slightly reduce font size */
+            text-align: center; /* Center the text */
+            flex: none; /* Remove flex grow on text */
+            width: 100%; /* Allow text to take full width */
+            white-space: normal; /* Allow text to wrap */
+            overflow: visible; /* Make overflow visible when wrapping */
+            text-overflow: unset; /* Remove ellipsis when text wraps */
+          }
+        }
+
+        @media (max-width: 480px) {
+          .green-bar {
+            padding: 8px 15px; /* Further reduce padding on very small screens */
+          }
+
+          .green-bar-text {
+            font-size: 12px; /* Further reduce font size for readability */
+          }
+
+          /* Adjustments for the main header on very small screens if needed */
+          .navbar-brand .logo-image {
+            width: 150px; /* Make logo smaller */
+            height: auto;
+          }
+
+          .btn-contact {
+            padding: 6px 15px; /* Smaller button */
+            font-size: 14px;
           }
         }
       `}</style>
@@ -397,18 +459,18 @@ export default function Header() {
             {/* Logo */}
             <a className="navbar-brand" href="/">
                <img 
-                src="/images/it_plus_logo.png" 
-                alt="IT Plus Logo" 
-                className="logo-image"
+               src="/images/it_plus_logo.png" 
+               alt="IT Plus Logo" 
+               className="logo-image"
                />
             </a>
             
-            {/* Mobile Toggle */}
+            {/* Mobile Toggle (for a future mobile menu if implemented) */}
             <button className="mobile-toggle" type="button">
               <i className="fas fa-bars"></i>
             </button>
             
-            {/* Navigation Links */}
+            {/* Navigation Links (hidden on smaller screens by media query) */}
             <div className="navbar-nav">
               {/* About Us Dropdown */}
               <div className="nav-item">
@@ -524,6 +586,8 @@ export default function Header() {
         {/* Green Bar */}
         <div className="green-bar">
           <p className="green-bar-text">Join ITPlus at Connect Brasil and discover how you can transform your business</p>
+          <p className="green-bar-text">{'====>'}Learn More</p>
+          {/* REMOVED "Contact Now" button as per your instruction */}
         </div>
       </div>
     </>

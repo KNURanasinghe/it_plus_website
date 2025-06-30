@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 
 export default function HeroSection() {
   return (
@@ -97,7 +96,7 @@ export default function HeroSection() {
         }
         
         .btn-live-help {
-          background: #33FF94;
+          background: rgb(245, 149, 32) ;
           color: #360065;
           border: none;
           border-radius: 50px;
@@ -111,7 +110,7 @@ export default function HeroSection() {
         }
         
         .btn-live-help:hover {
-          background: #2EE085;
+          background: rgb(245, 149, 32) ;
           transform: translateY(-2px);
           box-shadow: 0 12px 35px rgba(51, 255, 148, 0.4);
         }
@@ -119,7 +118,7 @@ export default function HeroSection() {
         .btn-contact-hero {
           background: transparent;
           color: white;
-          border: 4px solid #33FF94;
+          border: 4px solid rgb(245, 149, 32) ;
           border-radius: 50px;
           font-size: 32px;
           font-weight: 500;
@@ -130,7 +129,7 @@ export default function HeroSection() {
         }
         
         .btn-contact-hero:hover {
-          background: #33FF94;
+          background: rgb(245, 149, 32) ;
           color: #360065;
           transform: translateY(-2px);
           box-shadow: 0 12px 35px rgba(51, 255, 148, 0.3);
@@ -240,7 +239,7 @@ export default function HeroSection() {
         
         <div className="hero-content">
           <h1 className="hero-title">
-            SIMPLYFYING IT WITH
+            SIMPLYFYING <span style={{ color: '#ef8f11' }}>IT</span> WITH
             <img 
               src="/images/hero_logo.png" 
               alt="IT Plus Logo" 

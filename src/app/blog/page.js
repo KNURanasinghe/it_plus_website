@@ -1,133 +1,102 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 
-
 export default function BlogPage() {
   const [selectedBlog, setSelectedBlog] = useState(null);
+  const [latestPosts, setLatestPosts] = useState([]);
+  const [regularPosts, setRegularPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const latestPosts = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop",
-      date: "May 9th, 2023",
-      title: "The most Popular Business Of the Year",
-      readTime: "2 Min Read",
-      type: "featured",
-      author: "John Doe",
-      content: `
-        <h2>Introduction</h2>
-        <p>In today's rapidly evolving business landscape, certain companies have risen to extraordinary heights, capturing market attention and setting new standards for success. This year has been particularly remarkable for businesses that have adapted to changing consumer behaviors and technological advancements.</p>
-        
-        <h2>Market Leaders</h2>
-        <p>The most popular businesses of 2023 share several common characteristics: innovation, customer-centricity, and adaptability. These companies have not only survived recent challenges but have thrived by embracing digital transformation and sustainable practices.</p>
-        
-        <h2>Key Success Factors</h2>
-        <p>Several factors contribute to their success:</p>
-        <ul>
-          <li>Digital innovation and technology adoption</li>
-          <li>Strong customer engagement strategies</li>
-          <li>Sustainable business practices</li>
-          <li>Agile response to market changes</li>
-        </ul>
-        
-        <h2>Future Outlook</h2>
-        <p>As we look ahead, these businesses continue to set trends and influence industry standards. Their success stories provide valuable insights for other organizations looking to achieve similar growth and recognition in their respective markets.</p>
-      `
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=150&h=100&fit=crop",
-      date: "Apr 19th, 2023",
-      title: "Digital Transformation Trends",
-      readTime: "3 Min Read",
-      type: "small",
-      author: "Jane Smith",
-      content: `
-        <h2>The Digital Revolution</h2>
-        <p>Digital transformation has become more than just a buzzword—it's a fundamental shift in how businesses operate and deliver value to customers. This comprehensive guide explores the latest trends shaping the digital landscape.</p>
-        
-        <h2>Emerging Technologies</h2>
-        <p>From artificial intelligence to blockchain, emerging technologies are reshaping industries and creating new opportunities for innovation and growth.</p>
-      `
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=150&h=100&fit=crop",
-      date: "Apr 12th, 2023",
-      title: "Sustainable Business Practices",
-      readTime: "4 Min Read",
-      type: "small",
-      author: "Mike Johnson",
-      content: `
-        <h2>Going Green</h2>
-        <p>Sustainability is no longer optional for modern businesses. Companies that embrace sustainable practices are not only helping the environment but also improving their bottom line.</p>
-        
-        <h2>Implementation Strategies</h2>
-        <p>Learn practical approaches to implementing sustainable practices in your organization, from energy efficiency to waste reduction.</p>
-      `
-    },
-  ];
+  // PocketBase API configuration
+  const POCKETBASE_URL = 'http://127.0.0.1:8090';
 
-  const regularPosts = [
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
-      date: "May 9th, 2023",
-      title: "Remote Work Revolution",
-      readTime: "5 Min Read",
-      author: "Sarah Wilson",
-      content: `<h2>The Future of Work</h2><p>Remote work has transformed from a temporary solution to a permanent fixture in the modern workplace...</p>`
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop",
-      date: "Apr 27th, 2023",
-      title: "Data Analytics in Business",
-      readTime: "6 Min Read",
-      author: "David Chen",
-      content: `<h2>Making Data-Driven Decisions</h2><p>In today's competitive landscape, businesses that leverage data analytics gain significant advantages...</p>`
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1553484771-371a605b060b?w=400&h=250&fit=crop",
-      date: "Apr 20th, 2023",
-      title: "Cybersecurity Best Practices",
-      readTime: "4 Min Read",
-      author: "Lisa Rodriguez",
-      content: `<h2>Protecting Your Business</h2><p>As cyber threats evolve, businesses must stay ahead with robust security measures...</p>`
-    },
-    {
-      id: 7,
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop",
-      date: "May 9th, 2023",
-      title: "Team Collaboration Tools",
-      readTime: "3 Min Read",
-      author: "Tom Anderson",
-      content: `<h2>Enhancing Productivity</h2><p>Discover the latest tools and strategies for improving team collaboration in modern workplaces...</p>`
-    },
-    {
-      id: 8,
-      image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=250&fit=crop",
-      date: "Apr 27th, 2023",
-      title: "Customer Experience Excellence",
-      readTime: "5 Min Read",
-      author: "Emily Davis",
-      content: `<h2>Delighting Customers</h2><p>Learn how leading companies create exceptional customer experiences that drive loyalty and growth...</p>`
-    },
-    {
-      id: 9,
-      image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=250&fit=crop",
-      date: "Apr 20th, 2023",
-      title: "Innovation in Startups",
-      readTime: "4 Min Read",
-      author: "Alex Thompson",
-      content: `<h2>Startup Success Stories</h2><p>Explore how innovative startups are disrupting traditional industries and creating new markets...</p>`
-    }
-  ];
+  // Function to get file URL from PocketBase
+  const getImageUrl = (record, filename) => {
+    if (!filename) return "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop";
+    return `${POCKETBASE_URL}/api/files/blog/${record.id}/${filename}`;
+  };
 
-  const allPosts = [...latestPosts, ...regularPosts];
+  // Fetch blog posts from PocketBase
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${POCKETBASE_URL}/api/collections/blog/records?sort=-created`);
+        console.log('Fetching blog posts from:', `${POCKETBASE_URL}/api/collections/blog/records?sort=-created`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Separate posts based on postkind
+        const latest = data.items.filter(post => post.postkind === 'latestPosts');
+        const regular = data.items.filter(post => post.postkind === 'regularPosts');
+        
+        // Transform data to match component structure
+        const transformedLatest = latest.map(post => ({
+          id: post.id,
+          image: getImageUrl(post, post.image),
+          date: new Date(post.created).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+          }),
+          title: post.title,
+          readTime: post.readTime || "2 Min Read",
+          type: post.type || "featured",
+          author: post.author || "Admin",
+          content: post.content || `<h2>Content</h2><p>${post.title}</p>`,
+          postkind: post.postkind
+        }));
+
+        const transformedRegular = regular.map(post => ({
+          id: post.id,
+          image: getImageUrl(post, post.image),
+          date: new Date(post.created).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+          }),
+          title: post.title,
+          readTime: post.readTime || "3 Min Read",
+          author: post.author || "Admin",
+          content: post.content || `<h2>Content</h2><p>${post.title}</p>`,
+          postkind: post.postkind
+        }));
+
+        setLatestPosts(transformedLatest);
+        setRegularPosts(transformedRegular);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching blog posts:', err);
+        setError('Failed to load blog posts. Please try again later.');
+        
+        // Fallback to default data if API fails
+        setLatestPosts([
+          {
+            id: 1,
+            image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop",
+            date: "May 9th, 2023",
+            title: "The most Popular Business Of the Year",
+            readTime: "2 Min Read",
+            type: "featured",
+            author: "John Doe",
+            content: `<h2>Introduction</h2><p>Sample content...</p>`,
+            postkind: "latest"
+          }
+        ]);
+        setRegularPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, []);
 
   const handlePostClick = (post) => {
     setSelectedBlog(post);
@@ -136,6 +105,108 @@ export default function BlogPage() {
   const handleBackToBlog = () => {
     setSelectedBlog(null);
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="blog-page-container">
+        <Header />
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading blog posts...</p>
+        </div>
+        <Footer />
+        
+        <style jsx>{`
+          .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            gap: 20px;
+          }
+          
+          .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4a00e0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+          }
+          
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="blog-page-container">
+        <Header />
+        <div className="error-container">
+          <div className="error-message">
+            <h2>Oops! Something went wrong</h2>
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()} className="retry-button">
+              Try Again
+            </button>
+          </div>
+        </div>
+        <Footer />
+        
+        <style jsx>{`
+          .error-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            padding: 20px;
+          }
+          
+          .error-message {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+          }
+          
+          .error-message h2 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+          }
+          
+          .error-message p {
+            color: #666;
+            margin-bottom: 25px;
+          }
+          
+          .retry-button {
+            background: #4a00e0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+          }
+          
+          .retry-button:hover {
+            background: #3a00b0;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   if (selectedBlog) {
     return (
@@ -152,6 +223,7 @@ export default function BlogPage() {
               <span className="blog-detail-date">{selectedBlog.date}</span>
               <span className="blog-detail-author">By {selectedBlog.author}</span>
               <span className="blog-detail-read-time">{selectedBlog.readTime}</span>
+              <span className="blog-detail-kind">{selectedBlog.postkind}</span>
             </div>
             
             <h1 className="blog-detail-title">{selectedBlog.title}</h1>
@@ -161,6 +233,9 @@ export default function BlogPage() {
                 src={selectedBlog.image} 
                 alt={selectedBlog.title}
                 className="blog-detail-image"
+                onError={(e) => {
+                  e.target.src = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop";
+                }}
               />
             </div>
             
@@ -174,6 +249,7 @@ export default function BlogPage() {
                 <span className="tag">Business</span>
                 <span className="tag">Technology</span>
                 <span className="tag">Innovation</span>
+                <span className="tag">{selectedBlog.postkind}</span>
               </div>
               
               <div className="blog-share">
@@ -242,17 +318,28 @@ export default function BlogPage() {
             margin-bottom: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
           }
 
           .blog-detail-date,
           .blog-detail-author,
-          .blog-detail-read-time {
+          .blog-detail-read-time,
+          .blog-detail-kind {
             font-size: 14px;
             color: #666;
           }
 
           .blog-detail-author {
             font-weight: 600;
+          }
+
+          .blog-detail-kind {
+            background: #4a00e0;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
           }
 
           .blog-detail-title {
@@ -316,6 +403,7 @@ export default function BlogPage() {
           .blog-tags {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
           }
 
           .tag {
@@ -377,6 +465,10 @@ export default function BlogPage() {
               gap: 20px;
               align-items: flex-start;
             }
+
+            .blog-detail-meta {
+              gap: 10px;
+            }
           }
         `}</style>
       </div>
@@ -384,10 +476,9 @@ export default function BlogPage() {
   }
 
   return (
-   
-
     <div className="blog-page-container">
-        <Header />
+      <Header />
+      
       {/* Blog Hero Section - Clean Design */}
       <section className="blog-hero-section">
         <div className="blog-hero-content">
@@ -397,75 +488,106 @@ export default function BlogPage() {
       </section>
 
       {/* Latest Post Section */}
-      <section className="latest-post-section">
-        <div className="container">
-          <div className="section-header-stacked">
-            <p className="section-path">\ Our Blog \</p>
-            <h2 className="latest-post-title">Latest Post</h2>
-          </div>
-          <div className="latest-post-grid">
-            <div className="main-featured-post-card" onClick={() => handlePostClick(latestPosts[0])}>
-              <img
-                src={latestPosts[0].image}
-                alt={latestPosts[0].title}
-                className="post-image"
-              />
-              <div className="post-info">
-                <span className="post-date">{latestPosts[0].date}</span>
-                <h3 className="post-title">{latestPosts[0].title}</h3>
-                <div className="post-meta-bottom">
-                  <span className="post-read-time">{latestPosts[0].readTime}</span>
-                  <div className="read-more">Read More</div>
+      {latestPosts.length > 0 && (
+        <section className="latest-post-section">
+          <div className="container">
+            <div className="section-header-stacked">
+              <p className="section-path">\ Our Blog \</p>
+              <h2 className="latest-post-title">Latest Post</h2>
+            </div>
+            <div className="latest-post-grid">
+              <div className="main-featured-post-card" onClick={() => handlePostClick(latestPosts[0])}>
+                <img
+                  src={latestPosts[0].image}
+                  alt={latestPosts[0].title}
+                  className="post-image"
+                  onError={(e) => {
+                    e.target.src = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop";
+                  }}
+                />
+                <div className="post-info">
+                  <span className="post-date">{latestPosts[0].date}</span>
+                  <h3 className="post-title">{latestPosts[0].title}</h3>
+                  <div className="post-meta-bottom">
+                    <span className="post-read-time">{latestPosts[0].readTime}</span>
+                    <div className="read-more">Read More</div>
+                  </div>
                 </div>
               </div>
+              {latestPosts.length > 1 && (
+                <div className="side-recent-posts">
+                  {latestPosts.slice(1).map((post) => (
+                    <div key={post.id} className="small-post-card" onClick={() => handlePostClick(post)}>
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="small-post-image"
+                        onError={(e) => {
+                          e.target.src = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=150&h=100&fit=crop";
+                        }}
+                      />
+                      <div className="small-post-info">
+                        <span className="small-post-date">{post.date}</span>
+                        <h4 className="small-post-title">{post.title}</h4>
+                        <div className="small-post-meta-bottom">
+                          <span className="small-post-read-time">{post.readTime}</span>
+                          <div className="small-read-more">Read More</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <div className="side-recent-posts">
-              {latestPosts.slice(1).map((post) => (
-                <div key={post.id} className="small-post-card" onClick={() => handlePostClick(post)}>
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="small-post-image"
+          </div>
+        </section>
+      )}
+
+      {/* All Posts Section */}
+      {regularPosts.length > 0 && (
+        <section className="all-posts-section">
+          <div className="container">
+            <div className="section-header-stacked">
+              <p className="section-path">\ Our Blog \</p>
+              <h2>More Articles</h2>
+            </div>
+            <div className="regular-posts-grid">
+              {regularPosts.map((post) => (
+                <div key={post.id} className="regular-post-card" onClick={() => handlePostClick(post)}>
+                  <img 
+                    src={post.image} 
+                    alt={post.title} 
+                    className="post-image"
+                    onError={(e) => {
+                      e.target.src = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop";
+                    }}
                   />
-                  <div className="small-post-info">
-                    <span className="small-post-date">{post.date}</span>
-                    <h4 className="small-post-title">{post.title}</h4>
-                    <div className="small-post-meta-bottom">
-                      <span className="small-post-read-time">{post.readTime}</span>
-                      <div className="small-read-more">Read More</div>
+                  <div className="post-info">
+                    <span className="post-date">{post.date}</span>
+                    <h3 className="post-title">{post.title}</h3>
+                    <div className="post-meta-bottom">
+                      <span className="post-read-time">{post.readTime}</span>
+                      <div className="read-more">Read More</div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* All Posts Section */}
-      <section className="all-posts-section">
-        <div className="container">
-          <div className="section-header-stacked">
-            <p className="section-path">\ Our Blog \</p>
-            <h2>More Articles</h2>
+      {/* No Posts Message */}
+      {latestPosts.length === 0 && regularPosts.length === 0 && !loading && (
+        <section className="no-posts-section">
+          <div className="container">
+            <div className="no-posts-message">
+              <h2>No blog posts available</h2>
+              <p>Check back later for new content!</p>
+            </div>
           </div>
-          <div className="regular-posts-grid">
-            {regularPosts.map((post) => (
-              <div key={post.id} className="regular-post-card" onClick={() => handlePostClick(post)}>
-                <img src={post.image} alt={post.title} className="post-image" />
-                <div className="post-info">
-                  <span className="post-date">{post.date}</span>
-                  <h3 className="post-title">{post.title}</h3>
-                  <div className="post-meta-bottom">
-                    <span className="post-read-time">{post.readTime}</span>
-                    <div className="read-more">Read More</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <Footer/>
 
@@ -481,6 +603,29 @@ export default function BlogPage() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 0 1.5rem;
+        }
+
+        .no-posts-section {
+          padding: 80px 0;
+          text-align: center;
+        }
+
+        .no-posts-message {
+          background: white;
+          padding: 60px 40px;
+          border-radius: 20px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .no-posts-message h2 {
+          color: #4a00e0;
+          margin-bottom: 15px;
+        }
+
+        .no-posts-message p {
+          color: #666;
         }
 
         /* Blog Hero Section - Clean and Simple */
