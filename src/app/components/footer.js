@@ -45,7 +45,11 @@ const Footer = () => {
           <div className="footer-grid">
             {/* Brand Column */}
             <div className="footer-brand">
-              <h2 className="brand-logo">IT PLUS</h2>
+              <img 
+               src="/images/it_plus_logo.png" 
+               alt="IT Plus Logo" 
+               className="logo-image"
+               />
               <p className="brand-description">
                 Global destination for specialized IT solutions, ideal for
                 startups and businesses seeking to enhance their digital
@@ -602,6 +606,8 @@ const Footer = () => {
             min-height: 500px;
           }
 
+         
+
           .footer-svg svg {
             min-height: 100%;
           }
@@ -721,6 +727,37 @@ const Footer = () => {
             font-size: 14px;
           }
         }
+           @media (max-width: 769px) {
+  
+  
+  .footer-brand {
+          font-size: 26px;
+          font-weight: 400;
+          margin-bottom: 20px;
+          padding-top:100px
+        }
+}
+
+        @media (max-width: 480px) {
+  
+  
+  .footer-brand {
+          font-size: 26px;
+          font-weight: 400;
+          margin-bottom: 20px;
+          padding-top:80px
+        }
+}
+             @media (max-width: 375px) {
+  
+  
+  .footer-brand {
+          font-size: 26px;
+          font-weight: 400;
+          margin-bottom: 20px;
+          padding-top:100px
+        }
+}
       `}</style>
     </footer>
   );
