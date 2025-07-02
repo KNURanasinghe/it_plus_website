@@ -748,14 +748,14 @@ const Footer = () => {
           padding-top:80px
         }
 }
-             @media (max-width: 375px) {
+             @media (max-width: 380px) {
   
   
   .footer-brand {
           font-size: 26px;
           font-weight: 400;
           margin-bottom: 20px;
-          padding-top:100px
+          padding-top:130px
         }
 }
       `}</style>

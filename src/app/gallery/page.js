@@ -303,7 +303,7 @@ export default function GalleryPage() {
       <section className="gallery-grid-section">
         <div className="container">
           {/* Debug info for troubleshooting */}
-          <div style={{
+          {/* <div style={{
             marginBottom: '20px', 
             padding: '15px', 
             background: '#f0f0f0', 
@@ -316,7 +316,7 @@ export default function GalleryPage() {
             Total Images: <strong>{galleryImages.length}</strong><br/>
             Filtered Images: <strong>{filteredImages.length}</strong><br/>
             Available Categories: <strong>{categories.map(c => `${c.id}(${c.count})`).join(', ')}</strong>
-          </div>
+          </div> */}
           
           {filteredImages.length > 0 ? (
             <div className="image-grid">
