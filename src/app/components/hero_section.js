@@ -70,11 +70,11 @@ export default function HeroSection() {
 }
         
         .hero-logo-image {
-  width: 120px;
-  height: 120px;
+  width: 100;
+  height: 100px;
   object-fit: contain;
   
-  padding: 15px;
+  padding: 0px;
   border-radius: 15px;
   margin: 0;
 }

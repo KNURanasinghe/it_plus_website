@@ -227,12 +227,13 @@ export default function Header() {
         }
         
         .green-bar {
-          background: rgb(245, 149, 32) ;
+          background: rgb(245, 149, 32);
           height: 36px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 58px;
+          padding: 0 39px; /* Changed to match logo and contact button margins */
+          position: relative;
         }
         
         .green-bar-text {
@@ -241,12 +242,18 @@ export default function Header() {
           font-weight: 400;
           font-family: 'Outfit', sans-serif;
           margin: 0;
-          flex: 1;
-          min-width: 0; 
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          text-align: center;
+        }
+        
+        .green-bar-text.left {
+          /* Align with logo start position */
+          position: absolute;
+          left: 39px;
+        }
+        
+        .green-bar-text.right {
+          /* Align with contact button end position */
+          position: absolute;
+          right: 39px;
         }
         
         .dropdown-menu-custom {
@@ -561,6 +568,13 @@ export default function Header() {
             gap: 0;
           }
 
+          .green-bar-text.left,
+          .green-bar-text.right {
+            position: static;
+            text-align: center;
+            width: 100%;
+          }
+
           .green-bar-text {
             font-size: 14px;
             text-align: center;
@@ -852,8 +866,11 @@ export default function Header() {
 
         {/* Green Bar */}
         <div className="green-bar">
-          <p className="green-bar-text">Join ITPlus at Connect Brasil and discover how you can transform your business</p>
-          <p className="green-bar-text">{'====>'}Learn More</p>
+          <p className="green-bar-text left">Join ITPlus at Connect Brasil and discover how you can transform your business</p>
+          <p className="green-bar-text right">
+  <i className="fas fa-arrow-right" style={{marginRight: '8px'}}></i>
+  Learn More
+</p>
         </div>
       </div>
     </>

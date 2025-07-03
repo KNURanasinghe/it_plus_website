@@ -139,10 +139,11 @@ export default function Home() {
         
         .section-title {
           color: #360065;
-          font-size: 70px;
+          font-size: 60px;
           font-weight: 500;
           text-align: center;
           margin-bottom: 20px;
+          margin-top:30px !important;
           white-space: nowrap;
         }
         
@@ -159,7 +160,7 @@ export default function Home() {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 25px;
+          margin-bottom: -19px;
         }
         
         .line {
@@ -256,6 +257,7 @@ export default function Home() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          margin-bottom: 30px;
         }
         
         .feature-icon {
@@ -298,14 +300,15 @@ export default function Home() {
   height: 120px;
   border-radius: 10px;
   margin: 20px;
+  background:transparent !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+ 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
   position: relative;
-  background: white;
+  
 }
 
 .client-logo:hover {
@@ -449,6 +452,7 @@ export default function Home() {
           font-size: 16px;
           font-weight: 400;
           padding: 10px 30px;
+          margin-bottom: 30px;
         }
         
        /* Testimonials Section */
@@ -907,6 +911,7 @@ export default function Home() {
   .section-title {
     font-size: 26px;
     margin-bottom: 12px;
+    margin-top:30px !important;
     padding: 0 5px;
   }
   
@@ -1073,6 +1078,7 @@ export default function Home() {
     font-size: 13px;
     padding: 8px 20px;
     margin-top: 15px;
+    margin-bottom: 30px;
   }
 
   /* Testimonials Section */
@@ -1377,7 +1383,7 @@ export default function Home() {
   .decorative-line {
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: -10px;
   }
   
   .line {
@@ -1543,6 +1549,7 @@ export default function Home() {
     font-size: 14px;
     padding: 10px 25px;
     margin-top: 20px;
+    margin-bottom: 30px;
   }
 
   /* Testimonials Section */
@@ -2106,7 +2113,7 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Experience cloud flexibility with our Cloud Solutions,
-                  including servers, security, and backup, enhancing your
+                  including servers,<br /> security, and backup, <br />enhancing your
                   business efficiency.
                 </p>
               </div>
@@ -2139,7 +2146,7 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Custom software development solutions to streamline your
-                  business processes and enhance operational efficiency.
+                  <br />business processes and <br />enhance operational efficiency.
                 </p>
               </div>
             </a>
@@ -2171,7 +2178,7 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Comprehensive IT support services including helpdesk,
-                  maintenance, and project management for optimized systems.
+                  maintenance,<br /> and project management <br />for optimized systems.
                 </p>
               </div>
             </a>
@@ -2203,7 +2210,7 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Quality IT hardware and products to support your business
-                  infrastructure and technology requirements.
+                  infrastructure<br /> and<br /> technology requirements.
                 </p>
               </div>
             </a>
@@ -2234,8 +2241,8 @@ export default function Home() {
               </div>
               <div className="service-description">
                 <p>
-                  Educational technology solutions and training programs to
-                  enhance learning and skill development.
+                  Educational technology solutions <br />and training programs to
+                  enhance<br /> learning and<br /> skill development.
                 </p>
               </div>
             </a>
