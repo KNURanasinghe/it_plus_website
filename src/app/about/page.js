@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, useRef } from 'react';
-import Header from '../components/header';
-import Footer from '../components/footer';
+import React, { useEffect, useState, useRef } from "react";
+import Header from "../components/header";
+import Footer from "../components/footer";
 
 // Counter component that animates numbers
-const AnimatedCounter = ({ end, duration = 2000, suffix = '' }) => {
+const AnimatedCounter = ({ end, duration = 2000, suffix = "" }) => {
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const counterRef = useRef(null);
@@ -41,11 +41,13 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '' }) => {
     const animateCount = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      
+
       // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      const currentCount = Math.floor(startCount + (endCount - startCount) * easeOutQuart);
-      
+      const currentCount = Math.floor(
+        startCount + (endCount - startCount) * easeOutQuart
+      );
+
       setCount(currentCount);
 
       if (progress < 1) {
@@ -60,7 +62,8 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '' }) => {
 
   return (
     <h3 ref={counterRef}>
-      {count}{suffix}
+      {count}
+      {suffix}
     </h3>
   );
 };
@@ -69,15 +72,18 @@ export default function AboutUsPage() {
   // Inject CSS using useEffect
   useEffect(() => {
     // Load Font Awesome if not already loaded
-    const fontAwesomeLink = document.querySelector('link[href*="font-awesome"]');
+    const fontAwesomeLink = document.querySelector(
+      'link[href*="font-awesome"]'
+    );
     if (!fontAwesomeLink) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href =
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
       document.head.appendChild(link);
     }
 
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       .about-us-page {
         font-family: 'Outfit', sans-serif;
@@ -106,12 +112,19 @@ export default function AboutUsPage() {
         padding: 0 60px;
       }
 
+      .hero-content-about h1 .our-text {
+        color: white; /* Sets the color of "Our" to white */
+     }
+
+     /* Styles for the "Story" part of the heading */
+      .hero-content-about h1 .story-text {
+      color: rgb(245, 149, 32); /* Sets the color of "Story" to the orange you're using elsewhere */
+    }
+
       .hero-content-about h1 {
-        font-size: 48px;
-        font-weight: 700;
-        margin-bottom: 30px;
-        color: #B584F6; /* Lighter purple for heading */
-      }
+     /* Example: Add some margin below the heading */
+      margin-bottom: 20px;
+    }
 
       .hero-content-about p {
         font-size: 18px;
@@ -238,22 +251,32 @@ export default function AboutUsPage() {
       .about-content h2 {
         font-size: 42px;
         font-weight: 700;
-        color: #7A4ADF;
+        /* The color property here is for any text in h2 NOT covered by spans.
+        It's good practice to keep it, but the span colors will override it. */
+        color: #360065;
         margin-bottom: 28px;
         line-height: 1.2;
-        position: relative;
+        position: relative; /* Essential for positioning the ::after element */
+       }
+
+      .about-content h2 .about-text {
+       color: #360065;
       }
 
+      .about-content h2 .us-text {
+       color: rgb(245, 149, 32); /* This is your orange color */
+    }
+
       .about-content h2::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        width: 60px;
-        height: 3px;
-        background: #7A4ADF;
-        border-radius: 2px;
-      }
+       content: '';
+       position: absolute;
+       bottom: -8px; /* Positions the line 8px below the h2 */
+       left: 0; /* Starts the line from the left edge of the h2 */
+       width: 60px; /* Sets the width of the line */
+       height: 3px; /* Sets the thickness of the line */
+       background: #360065; /* Sets the color of the line */
+       border-radius: 2px;
+     }
 
       .about-content p {
         font-size: 16px;
@@ -280,9 +303,17 @@ export default function AboutUsPage() {
       .locations-container h2 {
         font-size: 42px;
         font-weight: 700;
-        color: #B584F6; /* Lighter purple for heading */
-        margin-bottom: 40px;
+        
+        margin-bottom: 28px;
+        line-height: 1.2;
         position: relative;
+        text-align: center;
+      }
+        .loactions-container h2 .our-locations-text {
+        color: white;
+      }
+      .locations-container h2 .locations-text {
+        color: rgb(245, 149, 32); /* This is your orange color */
       }
 
       .locations-container h2::after {
@@ -291,9 +322,9 @@ export default function AboutUsPage() {
         bottom: -8px;
         left: 50%;
         transform: translateX(-50%);
-        width: 80px;
+        width: 60px;
         height: 3px;
-        background: #B584F6;
+        background: white;
         border-radius: 2px;
       }
 
@@ -313,7 +344,7 @@ export default function AboutUsPage() {
 
       .address-tag {
         position: absolute;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgb(245, 149, 32);
         color: #31086C;
         padding: 8px 15px;
         border-radius: 8px;
@@ -372,10 +403,23 @@ export default function AboutUsPage() {
       .vision-card h3 {
         font-size: 36px;
         font-weight: 700;
-        color: #7A4ADF;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
+        
+        
         position: relative;
       }
+      
+      /* Style for the "Our" part of "Our Mission" and "Our Vision" */
+      .mission-card h3 .our-prefix-text,
+      .vision-card h3 .our-prefix-text {
+      color: #31086C; /* The specified dark purple color */
+      }
+
+     /* Style for the "Mission" and "Vision" part of the headers */
+      .mission-card h3 .mission-vision-main-text,
+      .vision-card h3 .mission-vision-main-text {
+      color: rgb(245, 149, 32); /* Your orange color */
+     }
 
       .mission-card h3::after,
       .vision-card h3::after {
@@ -386,7 +430,7 @@ export default function AboutUsPage() {
         transform: translateX(-50%);
         width: 50px;
         height: 3px;
-        background: #7A4ADF;
+        background: #31086C;
         border-radius: 2px;
       }
 
@@ -420,10 +464,22 @@ export default function AboutUsPage() {
       .working-header h2 {
         font-size: 42px;
         font-weight: 700;
-        color: #7A4ADF;
+        
+        line-height: 1.2;
         margin-bottom: 20px;
         position: relative;
+        text-align: center;
       }
+
+      /* Style for the "Working With" part of the header */
+      .working-header h2 .working-with-text {
+        color: #31086C; /* The specified dark purple color */
+      }
+
+      /* Style for the "ItPlus" part of the header */
+      .working-header h2 .itplus-text {
+        color: rgb(245, 149, 32); /* Your orange color */
+     }
 
       .working-header h2::after {
         content: '';
@@ -433,7 +489,7 @@ export default function AboutUsPage() {
         transform: translateX(-50%);
         width: 80px;
         height: 3px;
-        background: #7A4ADF;
+        background: #31086C;
         border-radius: 2px;
       }
 
@@ -692,7 +748,7 @@ export default function AboutUsPage() {
         }
       }
     `;
-    
+
     document.head.appendChild(style);
 
     // Cleanup function to remove the style when component unmounts
@@ -706,20 +762,27 @@ export default function AboutUsPage() {
   return (
     <div className="about-us-page">
       <Header />
-      
+
       <div className="main-content">
         {/* Hero Section - Our Story & Stats */}
         <section className="hero-section-about">
           <div className="hero-container-about">
             <div className="hero-content-about">
-              <h1>Our Story</h1>
+              <h1>
+                <h1>
+                  <span class="our-text">Our</span>&nbsp;
+                  <span class="story-text">Story</span>
+                </h1>
+              </h1>
               <p>
-                Established in 2015, ITPlus is a leading technology company in Sri Lanka, dedicated to
-                empowering businesses and individuals through innovative and expert-driven IT solutions.
-                We specialize in services including Enterprise IT Solutions, Cloud Services, System
-                and Hardware Development, Contract-based IT Support, and a wide range of IT
-                Products. Our specialized IT Training Academy is recognized for developing industry-
-                focused human skills, enabling a digitally advanced IT community across the nation.
+                Established in 2015, ITPlus is a leading technology company in
+                Sri Lanka, dedicated to empowering businesses and individuals
+                through innovative and expert-driven IT solutions. We specialize
+                in services including Enterprise IT Solutions, Cloud Services,
+                System and Hardware Development, Contract-based IT Support, and
+                a wide range of IT Products. Our specialized IT Training Academy
+                is recognized for developing industry- focused human skills,
+                enabling a digitally advanced IT community across the nation.
               </p>
             </div>
             <div className="stats-grid">
@@ -755,23 +818,26 @@ export default function AboutUsPage() {
         <section className="about-section">
           <div className="about-container">
             <div className="about-image">
-              <img 
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=280&fit=crop" 
-                alt="IT Team Meeting" 
+              <img
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=280&fit=crop"
+                alt="IT Team Meeting"
               />
             </div>
             <div className="about-content">
-              <h2>About Us</h2>
+              <h2>
+                <span class="about-text">About</span>&nbsp;
+                <span class="us-text">Us</span>
+              </h2>
               <p>
-                OneAccess Technologies is a trusted team of experts specializing 
-                in Network Solutions, Wi-Fi Systems, VoIP, CCTV, and IT Support 
-                Services in Sri Lanka. Established in 2015 by K.M. Erandi Rodrigo, 
-                we bring over 10 years of expertise in system architecture, 
-                network engineering, telecommunications, and project 
-                management to deliver cutting-edge solutions. Whether you 
-                need enterprise networking, wireless connectivity, or all the IT 
-                related support and solutions, we're here to meet all your 
-                technology needs with reliability and professionalism.
+                OneAccess Technologies is a trusted team of experts specializing
+                in Network Solutions, Wi-Fi Systems, VoIP, CCTV, and IT Support
+                Services in Sri Lanka. Established in 2015 by K.M. Erandi
+                Rodrigo, we bring over 10 years of expertise in system
+                architecture, network engineering, telecommunications, and
+                project management to deliver cutting-edge solutions. Whether
+                you need enterprise networking, wireless connectivity, or all
+                the IT related support and solutions, we're here to meet all
+                your technology needs with reliability and professionalism.
               </p>
             </div>
           </div>
@@ -780,12 +846,12 @@ export default function AboutUsPage() {
         {/* Locations Section */}
         <section className="locations-section">
           <div className="locations-container">
-            <h2>Our Locations</h2>
+            <h2>
+              <span class="our-locations-text">Our</span>&nbsp;
+              <span class="locations-text">Locations</span>
+            </h2>
             <div className="world-map-container">
-              <img 
-                src="images/about/map.jpg" 
-                alt="World Map" 
-              />
+              <img src="images/about/map.jpg" alt="World Map" />
               {/* These positions are illustrative and would need fine-tuning */}
               <div className="address-tag address-1">Address 1</div>
               <div className="address-tag address-2">Address 2</div>
@@ -798,21 +864,28 @@ export default function AboutUsPage() {
         <section className="mission-vision-section">
           <div className="mission-vision-container">
             <div className="mission-card">
-              <h3>Mission</h3>
+              <h3>
+                <span class="our-prefix-text">Our</span>&nbsp;
+                <span class="mission-vision-main-text">Mission</span>
+              </h3>
               <p>
-                To empower businesses across Sri Lanka with reliable, 
-                innovative, and secure IT solutions—including networking, Wi-Fi, VoIP, CCTV, and IT support—tailored to drive growth, 
+                To empower businesses across Sri Lanka with reliable,
+                innovative, and secure IT solutions—including networking, Wi-Fi,
+                VoIP, CCTV, and IT support—tailored to drive growth,
                 connectivity, and long-term success.
               </p>
             </div>
             <div className="vision-card">
-              <h3>Vision</h3>
+              <h3>
+                <span class="our-prefix-text">Our</span>&nbsp;
+                <span class="mission-vision-main-text">Vision</span>
+              </h3>
               <p>
-                To become Sri Lanka's most trusted and innovative 
-                technology partner—empowering businesses through smart 
-                digital infrastructure, seamless connectivity, and secure IT 
-                environments. We aim to set the benchmark for service 
-                excellence, reliability, and long-term technological growth 
+                To become Sri Lanka's most trusted and innovative technology
+                partner—empowering businesses through smart digital
+                infrastructure, seamless connectivity, and secure IT
+                environments. We aim to set the benchmark for service
+                excellence, reliability, and long-term technological growth
                 across the nation.
               </p>
             </div>
@@ -823,10 +896,15 @@ export default function AboutUsPage() {
         <section className="working-section">
           <div className="working-container">
             <div className="working-header">
-              <h2>Working With ItPlus</h2>
+              <h2>
+                <span class="working-with-text">Working With</span>&nbsp;
+                <span class="itplus-text">ItPlus</span>
+              </h2>
               <p>
-                For your Network and leave over 30 projects, OneAccess will find an unified construction to listen to your needs and 
-                accelerate your business challenges. We will then design solutions, begin providing and team based on your resources.
+                For your Network and leave over 30 projects, OneAccess will find
+                an unified construction to listen to your needs and accelerate
+                your business challenges. We will then design solutions, begin
+                providing and team based on your resources.
               </p>
             </div>
             <div className="working-cards">
@@ -836,8 +914,8 @@ export default function AboutUsPage() {
                 </div>
                 <h3>Expert Team</h3>
                 <p>
-                  Our expert team gives you the right solution. 
-                  Based on your needs and budget.
+                  Our expert team gives you the right solution. Based on your
+                  needs and budget.
                 </p>
               </div>
               <div className="working-card">
@@ -846,14 +924,13 @@ export default function AboutUsPage() {
                 </div>
                 <h3>Secure</h3>
                 <p>
-                  We Deliver Exceptional Security with 
-                  Outstanding Data Services Support.
+                  We Deliver Exceptional Security with Outstanding Data Services
+                  Support.
                 </p>
               </div>
             </div>
           </div>
         </section>
-
       </div>
 
       <Footer />

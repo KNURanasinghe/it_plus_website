@@ -88,7 +88,7 @@ const WhoSection = () => {
           z-index: 2;
           max-width: 1200px;
           margin: 0 auto;
-          padding: 80px 50px;
+          padding: 20px 50px;
           text-align: center;
         }
 
@@ -132,13 +132,13 @@ const WhoSection = () => {
 
         /* Description - Centered */
         .who-description-centered {
-          font-size: 18px;
+          font-size: 40px;
           line-height: 1.7;
           color: rgba(255, 255, 255, 0.95);
           margin-bottom: 40px;
           font-weight: 300;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          max-width: 700px;
+          max-width: 1600px;
           margin-left: auto;
           margin-right: auto;
         }
@@ -174,11 +174,15 @@ const WhoSection = () => {
         /* Responsive Design */
         @media (max-width: 1200px) {
           .who-content-centered {
-            padding: 70px 30px;
+            padding: 20px 30px;
           }
           
+          .who-description-centered {
+            font-size: 36px;
+            max-width: 900px;
+          }
           .who-main-title {
-            font-size: 56px;
+            font-size: 64px;
           }
         }
 
@@ -188,7 +192,7 @@ const WhoSection = () => {
           }
           
           .who-content-centered {
-            padding: 60px 25px;
+            padding: 10px 25px;
           }
           
           .who-main-title {
@@ -202,8 +206,8 @@ const WhoSection = () => {
           }
           
           .who-description-centered {
-            font-size: 17px;
-            max-width: 600px;
+            font-size: 36px;
+            max-width: 900px;
           }
         }
 
@@ -213,12 +217,12 @@ const WhoSection = () => {
           }
           
           .who-content-centered {
-            padding: 50px 20px;
+            padding: 20px 20px;
           }
 
           .who-main-title {
             font-size: 40px;
-            flex-direction: column;
+            flex-direction: row;
             gap: 15px;
           }
 
@@ -228,8 +232,8 @@ const WhoSection = () => {
           }
 
           .who-description-centered {
-            font-size: 16px;
-            max-width: 500px;
+            font-size: 20px;
+            max-width: 650px;
             margin-bottom: 35px;
           }
 
@@ -245,11 +249,11 @@ const WhoSection = () => {
           }
           
           .who-content-centered {
-            padding: 40px 15px;
+            padding: 10px 15px;
           }
 
           .who-main-title {
-            font-size: 32px;
+            font-size: 36px;
           }
 
           .title-logo {
@@ -258,7 +262,7 @@ const WhoSection = () => {
           }
 
           .who-description-centered {
-            font-size: 15px;
+            font-size: 18px;
             line-height: 1.6;
             margin-bottom: 30px;
           }
@@ -275,11 +279,11 @@ const WhoSection = () => {
           }
           
           .who-content-centered {
-            padding: 35px 10px;
+            padding: 10px 10px;
           }
 
           .who-main-title {
-            font-size: 28px;
+            font-size: 32px;
           }
 
           .title-logo {
@@ -288,11 +292,40 @@ const WhoSection = () => {
           }
 
           .who-description-centered {
-            font-size: 14px;
-            margin-bottom: 25px;
+            font-size: 16px;
+            margin-bottom: 15px;
           }
 
           .btn-our-story-centered {
+            padding: 10px 20px;
+            font-size: 12px;
+          }
+        }
+          @media (max-width: 312px) {
+          .who-section {
+            min-height: 380px;
+          }
+          
+          .who-content-centered {
+            padding: 5px 10px;
+          }
+
+          .who-main-title {
+            font-size: 32px;
+          }
+
+          .title-logo {
+            width: 45px;
+            height: 45px;
+          }
+
+          .who-description-centered {
+            font-size: 16px;
+            margin-bottom: 15px;
+          }
+
+          .btn-our-story-centered {
+          margin-top: 10px;
             padding: 10px 20px;
             font-size: 12px;
           }

@@ -30,13 +30,61 @@ export default function Header() {
       link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
       document.head.appendChild(link);
     }
+
+    // Handle scroll to hash on page load/refresh
+    const handleHashScroll = () => {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            const headerElement = document.querySelector('.header-container');
+            const headerHeight = headerElement ? headerElement.offsetHeight : 148;
+            const elementRect = element.getBoundingClientRect();
+            const absoluteElementTop = elementRect.top + window.pageYOffset;
+            const finalPosition = Math.max(0, absoluteElementTop - headerHeight - 20);
+            
+            window.scrollTo({
+              top: finalPosition,
+              behavior: 'smooth'
+            });
+          }
+        }, 500); // Wait for content to load
+      }
+    };
+
+    // Handle initial hash scroll and hash changes
+    handleHashScroll();
+    window.addEventListener('hashchange', handleHashScroll);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('hashchange', handleHashScroll);
+    };
   }, []);
 
   const toggleDropdown = (dropdown) => {
-    setIsDropdownOpen(prev => ({
-      ...prev,
-      [dropdown]: !prev[dropdown]
-    }));
+    setIsDropdownOpen(prev => {
+      const newState = {
+        ...prev,
+        [dropdown]: !prev[dropdown]
+      };
+      
+      // For mobile services dropdown, ensure proper height calculation
+      if (dropdown === 'services' && window.innerWidth <= 991) {
+        setTimeout(() => {
+          const servicesDropdown = document.querySelector('.mobile-services-dropdown');
+          if (servicesDropdown && newState.services) {
+            // Force recalculation of height
+            servicesDropdown.style.maxHeight = 'none';
+            servicesDropdown.style.height = 'auto';
+            console.log('Services dropdown opened - height reset');
+          }
+        }, 50);
+      }
+      
+      return newState;
+    });
   };
 
   const toggleMobileMenu = () => {
@@ -45,7 +93,7 @@ export default function Header() {
     setIsDropdownOpen({ aboutUs: false, services: false });
   };
 
-  // Enhanced navigation handler
+  // Enhanced navigation handler with improved scrolling
   const handleServiceNavigation = (sectionId, subcategoryId = null) => {
     // Prevent multiple rapid clicks
     if (isNavigating) return;
@@ -62,38 +110,88 @@ export default function Header() {
       // We're already on services page - smooth scroll to section
       console.log('Header: Scrolling to section:', targetId);
       
-      // Update hash first
-      window.history.replaceState(null, null, `#${targetId}`);
-      
-      // Wait a moment then scroll
-      setTimeout(() => {
+      // Scroll to element with better error handling
+      const scrollToElement = () => {
         const element = document.getElementById(targetId);
         if (element) {
-          const headerHeight = 148; // Header + green bar height
-          const rect = element.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          const elementTop = rect.top + scrollTop;
-          const finalPosition = Math.max(0, elementTop - headerHeight - 20);
+          // Calculate header height dynamically
+          const headerElement = document.querySelector('.header-container');
+          const headerHeight = headerElement ? headerElement.offsetHeight : 148;
           
+          // Get element position
+          const elementRect = element.getBoundingClientRect();
+          const absoluteElementTop = elementRect.top + window.pageYOffset;
+          const finalPosition = Math.max(0, absoluteElementTop - headerHeight - 20);
+          
+          // Smooth scroll to position
           window.scrollTo({
             top: finalPosition,
             behavior: 'smooth'
           });
+          
+          // Update URL hash after successful scroll
+          setTimeout(() => {
+            window.history.replaceState(null, null, `#${targetId}`);
+          }, 500);
+        } else {
+          console.warn(`Element with ID "${targetId}" not found`);
+          // Try again after a short delay in case content is still loading
+          setTimeout(scrollToElement, 200);
         }
-      }, 100);
+      };
+      
+      // Execute scroll after a small delay to ensure menu is closed
+      setTimeout(scrollToElement, 100);
+      
     } else {
-      // Navigate to services page with hash
+      // Navigate to services page with hash - use router for better handling
       console.log('Header: Navigating to services with hash:', targetId);
-      window.location.href = `/services#${targetId}`;
+      
+      // Use Next.js router if available, otherwise fallback to window.location
+      if (router && router.push) {
+        router.push(`/services#${targetId}`, undefined, { 
+          scroll: false // Disable automatic scroll, we'll handle it manually
+        }).then(() => {
+          // After navigation, scroll to the element
+          setTimeout(() => {
+            const element = document.getElementById(targetId);
+            if (element) {
+              const headerElement = document.querySelector('.header-container');
+              const headerHeight = headerElement ? headerElement.offsetHeight : 148;
+              const elementRect = element.getBoundingClientRect();
+              const absoluteElementTop = elementRect.top + window.pageYOffset;
+              const finalPosition = Math.max(0, absoluteElementTop - headerHeight - 20);
+              
+              window.scrollTo({
+                top: finalPosition,
+                behavior: 'smooth'
+              });
+            }
+          }, 300); // Longer delay for page navigation
+        });
+      } else {
+        // Fallback to window.location
+        window.location.href = `/services#${targetId}`;
+      }
     }
     
     // Reset navigation flag
-    setTimeout(() => setIsNavigating(false), 1000);
+    setTimeout(() => setIsNavigating(false), 1500);
   };
 
   return (
     <>
       <style jsx>{`
+        /* Global scroll behavior */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        /* Ensure sections have proper scroll margin for fixed header */
+        section[id], div[id] {
+          scroll-margin-top: 160px;
+        }
+        
         .header-container {
           position: relative;
           z-index: 1000;
@@ -232,7 +330,6 @@ export default function Header() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 39px; /* Changed to match logo and contact button margins */
           position: relative;
         }
         
@@ -245,27 +342,26 @@ export default function Header() {
         }
         
         .green-bar-text.left {
-          /* Align with logo start position */
           position: absolute;
-          left: 39px;
+          left: 52px;
         }
         
         .green-bar-text.right {
-          /* Align with contact button end position */
           position: absolute;
-          right: 39px;
+          right: 49px;
         }
         
         .dropdown-menu-custom {
           position: absolute;
           top: 100%;
+       
           left: 50%;
           transform: translateX(-50%);
           background: #360065;
           border: none;
           border-radius: 0 0 20px 20px;
           padding: 20px 0;
-          min-width: 800px;
+          min-width: 1200px;
           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
           z-index: 1000;
           opacity: 0;
@@ -370,15 +466,20 @@ export default function Header() {
           font-size: 24px;
           margin-right: 20px;
           cursor: pointer;
-          padding-top: 50px;
-          z-index: 1001; /* Ensure it's above mobile menu */
+          padding: 10px;
+          z-index: 1001;
           position: relative;
+          transition: color 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+          color: rgb(245, 149, 32);
         }
 
         /* Mobile Menu Overlay */
         .mobile-menu-overlay {
           position: fixed;
-          top: 0; /* Changed from 148px to 0 to cover entire screen */
+          top: 0;
           left: 0;
           right: 0;
           bottom: 0;
@@ -397,54 +498,59 @@ export default function Header() {
         /* Mobile Menu */
         .mobile-menu {
           position: fixed;
-          top: 0; /* Changed from 148px to 0 to start from top */
+          top: 0;
           left: 0;
           right: 0;
           background: #360065;
-          max-height: 100vh; /* Changed to full height */
+          max-height: 100vh;
+          height: 100vh; /* Full height */
           overflow-y: auto;
           transform: translateY(-100%);
           transition: transform 0.3s ease;
           z-index: 1000;
-          padding-top: 148px; /* Add padding to account for header space */
+          padding-top: 60px; /* Space for mobile header */
+          padding-bottom: 20px; /* Extra bottom padding */
         }
 
         .mobile-menu.show {
           transform: translateY(0);
         }
 
-        /* Mobile Menu Header - NEW */
+        /* Mobile Menu Header */
         .mobile-menu-header {
-          position: absolute;
+          position: fixed;
           top: 0;
           left: 0;
           right: 0;
-          height: 148px; /* Same as header height */
+          height: 60px;
           background: #360065;
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 0 20px;
           border-bottom: 1px solid rgba(245, 149, 32, 0.3);
+          z-index: 1001;
         }
 
         .mobile-menu-logo {
-          width: 150px;
-          height: auto;
+          height: 40px;
+          width: auto;
         }
 
         .mobile-close-btn {
           background: none;
           border: none;
           color: white;
-          font-size: 28px;
+          font-size: 24px;
           cursor: pointer;
-          padding: 10px;
+          padding: 8px;
           transition: color 0.3s ease;
+          border-radius: 4px;
         }
 
         .mobile-close-btn:hover {
           color: rgb(245, 149, 32);
+          background: rgba(245, 149, 32, 0.1);
         }
 
         .mobile-nav-item {
@@ -474,11 +580,12 @@ export default function Header() {
           background: rgba(0, 0, 0, 0.2);
           max-height: 0;
           overflow: hidden;
-          transition: max-height 0.3s ease;
+          transition: max-height 0.4s ease-in-out;
         }
 
         .mobile-dropdown.show {
-          max-height: 600px; /* Adjust as needed */
+          max-height: none; /* Remove height restriction */
+          max-height: 2000px; /* Large fallback for older browsers */
         }
 
         .mobile-dropdown-item {
@@ -491,16 +598,25 @@ export default function Header() {
           display: block;
           cursor: pointer;
           transition: all 0.3s ease;
+          border-left: 3px solid transparent;
         }
 
         .mobile-dropdown-item:hover {
           background: rgba(245, 149, 32, 0.1);
           color: rgb(245, 149, 32);
+          border-left-color: rgb(245, 149, 32);
+          padding-left: 45px;
         }
 
         /* Services Mobile Dropdown - Special Layout */
         .mobile-services-dropdown {
           padding: 0;
+          max-height: none !important; /* Override any max-height restrictions */
+        }
+
+        .mobile-services-dropdown.show {
+          max-height: none !important;
+          height: auto;
         }
 
         .mobile-service-category {
@@ -521,14 +637,92 @@ export default function Header() {
           margin: 0;
           cursor: pointer;
           transition: all 0.3s ease;
+          border-left: 4px solid rgb(245, 149, 32);
         }
 
         .mobile-category-title:hover {
           background: rgba(245, 149, 32, 0.2);
+          color: white;
         }
 
-        /* Responsive Design */
+        /* Ensure all service items are visible */
+        .mobile-service-category .mobile-dropdown-item {
+          white-space: normal;
+          word-wrap: break-word;
+          line-height: 1.4;
+        }
+
+        /* Add visual separator between categories */
+        .mobile-service-category:not(:last-child) {
+          margin-bottom: 8px;
+        }
+
+        /* Improve touch targets for mobile */
+        .mobile-dropdown-item {
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+        }
+
+        /* Debug: Add temporary border to see dropdown bounds */
+        .mobile-services-dropdown.show {
+          border: 2px solid rgba(245, 149, 32, 0.3) !important;
+        }
+
+        /* Responsive Breakpoints */
+        
+        /* 1200px and below */
+        @media (max-width: 1200px) {
+          .navbar-nav {
+            gap: 20px;
+          }
+          
+          .nav-link {
+            font-size: 14px;
+          }
+          
+          .dropdown-menu-custom {
+            min-width: 1100px;
+          }
+          
+          .dropdown-content {
+            padding: 0 20px;
+          }
+          
+          .dropdown-column {
+            margin: 0 10px;
+          }
+          
+          .green-bar-text.left {
+            left: 30px;
+            font-size: 14px;
+          }
+          
+          .green-bar-text.right {
+            right: 30px;
+            font-size: 14px;
+          }
+          
+          .navbar-brand {
+            margin-left: 20px;
+          }
+          
+          .header-actions {
+            margin-right: 20px;
+          }
+          
+          .logo-image {
+            width: 160px;
+            height: 100px;
+          }
+        }
+
+        /* 991px and below */
         @media (max-width: 991px) {
+          .navbar-custom {
+            height: 80px;
+          }
+          
           .navbar-custom .container-fluid {
             display: flex;
             justify-content: space-between;
@@ -542,6 +736,7 @@ export default function Header() {
 
           .header-actions {
             margin-right: 0;
+            gap: 10px;
           }
 
           .mobile-toggle {
@@ -549,23 +744,44 @@ export default function Header() {
           }
           
           .navbar-nav {
-            display: none; /* Hide desktop nav */
+            display: none;
           }
           
           .btn-contact {
             padding: 6px 15px;
             font-size: 14px;
+            border-width: 2px;
+          }
+          
+          .logo-image {
+            width: 140px;
+            height: 85px;
+          }
+          
+          .green-bar {
+            height: auto;
+            padding: 8px 20px;
+          }
+          
+          .green-bar-text {
+            font-size: 12px;
+            position: static;
+            text-align: center;
           }
         }
 
+        /* 768px and below */
         @media (max-width: 768px) {
+          .navbar-custom {
+            height: 70px;
+          }
+          
           .green-bar {
-            height: auto;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 10px 20px;
-            gap: 0;
+            padding: 10px 15px;
+            gap: 5px;
           }
 
           .green-bar-text.left,
@@ -576,33 +792,231 @@ export default function Header() {
           }
 
           .green-bar-text {
-            font-size: 14px;
-            text-align: center;
-            flex: none;
-            width: 100%;
-            white-space: normal;
-            overflow: visible;
-            text-overflow: unset;
+            font-size: 11px;
+            line-height: 1.3;
+          }
+          
+          .logo-image {
+            width: 120px;
+            height: 75px;
+          }
+          
+          .btn-contact {
+            padding: 5px 12px;
+            font-size: 12px;
+          }
+          
+          .mobile-menu-header {
+            height: 70px;
+            padding: 0 15px;
+          }
+          
+          .mobile-menu {
+            padding-top: 70px;
+          }
+          
+          .mobile-menu-logo {
+            height: 35px;
+          }
+          
+          .mobile-nav-link {
+            font-size: 15px;
+            padding: 12px 15px;
+          }
+          
+          .mobile-dropdown-item {
+            font-size: 13px;
+            padding: 10px 30px;
+          }
+          
+          .mobile-category-title {
+            font-size: 15px;
+            padding: 12px 15px;
           }
         }
 
+        /* 480px and below */
         @media (max-width: 480px) {
+          .navbar-custom {
+            height: 60px;
+          }
+          
           .green-bar {
-            padding: 8px 15px;
+            padding: 8px 10px;
           }
 
           .green-bar-text {
-            font-size: 12px;
+            font-size: 10px;
           }
 
-          .navbar-brand .logo-image {
-            width: 150px;
-            height: auto;
+          .logo-image {
+            width: 100px;
+            height: 60px;
           }
 
           .btn-contact {
-            padding: 6px 15px;
+            padding: 4px 10px;
+            font-size: 11px;
+            border-width: 2px;
+          }
+          
+          .header-actions {
+            gap: 8px;
+          }
+          
+          .mobile-toggle {
+            font-size: 20px;
+            margin-right: 10px;
+            padding: 8px;
+          }
+          
+          .mobile-menu-header {
+            height: 60px;
+            padding: 0 10px;
+          }
+          
+          .mobile-menu {
+            padding-top: 60px;
+          }
+          
+          .mobile-menu-logo {
+            height: 30px;
+          }
+          
+          .mobile-close-btn {
+            font-size: 20px;
+            padding: 6px;
+          }
+          
+          .mobile-nav-link {
             font-size: 14px;
+            padding: 12px 15px;
+          }
+          
+          .mobile-dropdown-item {
+            font-size: 12px;
+            padding: 8px 25px;
+          }
+          
+          .mobile-dropdown-item:hover {
+            padding-left: 30px;
+          }
+          
+          .mobile-category-title {
+            font-size: 14px;
+            padding: 10px 15px;
+          }
+        }
+
+        /* 396px and below */
+        @media (max-width: 396px) {
+          .navbar-custom {
+            height: 55px;
+          }
+          
+          .green-bar {
+            padding: 6px 8px;
+          }
+
+          .green-bar-text {
+            font-size: 9px;
+            line-height: 1.2;
+          }
+
+          .logo-image {
+            width: 90px;
+            height: 55px;
+          }
+
+          .btn-contact {
+            padding: 3px 8px;
+            font-size: 10px;
+            border-width: 1px;
+          }
+          
+          .header-actions {
+            gap: 5px;
+          }
+          
+          .mobile-toggle {
+            font-size: 18px;
+            margin-right: 8px;
+            padding: 6px;
+          }
+          
+          .mobile-menu-header {
+            height: 55px;
+            padding: 0 8px;
+          }
+          
+          .mobile-menu {
+            padding-top: 55px;
+          }
+          
+          .mobile-menu-logo {
+            height: 25px;
+          }
+          
+          .mobile-close-btn {
+            font-size: 18px;
+            padding: 5px;
+          }
+          
+          .mobile-nav-link {
+            font-size: 13px;
+            padding: 10px 12px;
+          }
+          
+          .mobile-dropdown-item {
+            font-size: 11px;
+            padding: 7px 20px;
+          }
+          
+          .mobile-dropdown-item:hover {
+            padding-left: 25px;
+          }
+          
+          .mobile-category-title {
+            font-size: 13px;
+            padding: 8px 12px;
+          }
+          
+          .dropdown-arrow {
+            font-size: 10px;
+          }
+        }
+
+        /* Additional improvements for touch devices */
+        @media (max-width: 991px) {
+          .mobile-nav-item,
+          .mobile-dropdown-item,
+          .mobile-category-title,
+          .mobile-close-btn {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+          }
+          
+          .mobile-dropdown-item {
+            min-height: 40px;
+          }
+
+          /* Ensure mobile services dropdown shows all content */
+          .mobile-services-dropdown {
+            max-height: none !important;
+            height: auto !important;
+          }
+
+          .mobile-services-dropdown.show {
+            max-height: none !important;
+            height: auto !important;
+            overflow: visible !important;
+          }
+
+          /* Make sure all service categories are visible */
+          .mobile-service-category {
+            display: block !important;
+            visibility: visible !important;
           }
         }
       `}</style>
@@ -623,12 +1037,12 @@ export default function Header() {
               alt="IT Plus Logo" 
               className="mobile-menu-logo"
             />
-            {/* <button 
+            <button 
               className="mobile-close-btn"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <i className="fas fa-times"></i>
-            </button> */}
+            </button>
           </div>
 
           {/* About Us */}
@@ -868,9 +1282,9 @@ export default function Header() {
         <div className="green-bar">
           <p className="green-bar-text left">Join ITPlus at Connect Brasil and discover how you can transform your business</p>
           <p className="green-bar-text right">
-  <i className="fas fa-arrow-right" style={{marginRight: '8px'}}></i>
-  Learn More
-</p>
+            <i className="fas fa-arrow-right" style={{marginRight: '8px'}}></i>
+            Learn More
+          </p>
         </div>
       </div>
     </>

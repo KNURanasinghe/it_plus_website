@@ -245,20 +245,39 @@ export default function Home() {
           padding: 80px 0;
         }
         
-        .feature-card {
-          background: linear-gradient(180deg, #7A4ADF 0%, #360065 100%);
-          border-radius: 50px;
-          box-shadow: 4px 4px 10px #7A4ADF;
-          color: white;
-          text-align: center;
-          padding: 40px 20px;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 30px;
-        }
+       .feature-card {
+  background: linear-gradient(180deg, #7A4ADF 0%, #360065 100%);
+  border-radius: 50px;
+  box-shadow: 4px 4px 10px #7A4ADF;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /* Add smooth transitions for all properties */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+}
+
+        .feature-card:hover {
+  /* Lift and scale effect */
+  transform: translateY(-14px) scale(1.05);
+  /* Enhanced shadow for depth */
+  box-shadow: 0 25px 50px rgba(122, 74, 223, 0.4), 
+              0 15px 30px rgba(54, 0, 101, 0.3),
+              4px 4px 20px #7A4ADF;
+  /* Slight background gradient shift */
+  background: linear-gradient(180deg, #8A5AEF 0%, #460075 100%);
+  /* Add a subtle glow effect */
+  filter: brightness(1.1);
+}
         
         .feature-icon {
         display: flex;
@@ -313,7 +332,7 @@ export default function Home() {
 
 .client-logo:hover {
   transform: scale(1.1) translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  
 }
 
 .client-logo img {
@@ -2113,8 +2132,9 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Experience cloud flexibility with our Cloud Solutions,
-                  including servers,<br /> security, and backup, <br />enhancing your
-                  business efficiency.
+                  including servers,
+                  <br /> security, and backup, <br />
+                  enhancing your business efficiency.
                 </p>
               </div>
             </a>
@@ -2146,7 +2166,9 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Custom software development solutions to streamline your
-                  <br />business processes and <br />enhance operational efficiency.
+                  <br />
+                  business processes and <br />
+                  enhance operational efficiency.
                 </p>
               </div>
             </a>
@@ -2178,7 +2200,9 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Comprehensive IT support services including helpdesk,
-                  maintenance,<br /> and project management <br />for optimized systems.
+                  maintenance,
+                  <br /> and project management <br />
+                  for optimized systems.
                 </p>
               </div>
             </a>
@@ -2210,7 +2234,9 @@ export default function Home() {
               <div className="service-description">
                 <p>
                   Quality IT hardware and products to support your business
-                  infrastructure<br /> and<br /> technology requirements.
+                  infrastructure
+                  <br /> and
+                  <br /> technology requirements.
                 </p>
               </div>
             </a>
@@ -2241,8 +2267,10 @@ export default function Home() {
               </div>
               <div className="service-description">
                 <p>
-                  Educational technology solutions <br />and training programs to
-                  enhance<br /> learning and<br /> skill development.
+                  Educational technology solutions <br />
+                  and training programs to enhance
+                  <br /> learning and
+                  <br /> skill development.
                 </p>
               </div>
             </a>

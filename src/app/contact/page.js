@@ -237,8 +237,8 @@ export default function ContactPage() {
           type="submit"
           style={{
             padding: '14px 28px',
-            backgroundColor: '#7A4ADF',
-            color: 'white',
+            backgroundColor: 'orange',
+            color: 'black',
             fontSize: '16px',
             fontWeight: 600,
             border: 'none',
